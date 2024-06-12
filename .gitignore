@@ -2399,5 +2399,3 @@ secring.*
 /.idea/
 /GUI/demo/
 /Project_2/powerpoint/
-/Project_3/models/pyspark_ml/
-/Project_2/saved_model/
