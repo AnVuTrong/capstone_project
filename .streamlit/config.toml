@@ -1,0 +1,26 @@
+[theme]
+#base='dark'
+#primaryColor="#A4C3A2"
+#backgroundColor="#5D7B6F"
+#secondaryBackgroundColor="#A4C3A2"
+#textColor="black"
+#font="sans serif"
+
+base='light'
+primaryColor="#5D7B6F"
+backgroundColor="#EAE7D6"
+secondaryBackgroundColor="#A4C3A2"
+textColor="black"
+font="sans serif"
+
+# https://coolors.co/5d7b6f-a4c3a2-b0d4b8-eae7d6-d7f9fa
+# Màu xanh lá cây đậm
+#5D7B6F
+# Màu xanh lá cây nhạt
+#A4C3A2
+# Màu xanh lá cây nhạt hơn
+#B0D4B8
+# Màu giấy
+#EAE7D6
+# Màu xanh dương nhạt
+#D7F9FA
