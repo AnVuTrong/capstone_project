@@ -6,6 +6,7 @@ This includes training and testing the models, as well as making recommendations
 - Collaborative filtering: Surprise and PySpark ALS.
 """
 import os
+import uuid
 import pickle
 import pandas as pd
 
@@ -43,7 +44,7 @@ class ProcessModels:
 			tfidf = models.TfidfModel(corpus)
 			index = similarities.SparseMatrixSimilarity(tfidf[corpus], num_features=len(dictionary))
 			self._save_model((tfidf, index, dictionary, df_courses), model_name)
-			
+		
 		query_tokens = self.data_preprocessing.tokenize(query)
 		query_bow = dictionary.doc2bow(query_tokens)
 		query_tfidf = tfidf[query_bow]
@@ -81,37 +82,54 @@ class ProcessModels:
 		return recommended_courses[
 			['CourseName', 'ReviewNumber', 'AvgStar', 'Level', 'Unit', 'Results', 'SimilarityScore']]
 	
-	def process_surprise(self, current_user_id, num_recommendations) -> pd.DataFrame:
+	def process_surprise(
+			self,
+			current_user_id=None,
+			user_data=None,
+			num_recommendations=10,
+			preset=True,
+	) -> pd.DataFrame:
 		"""Process the data for Surprise model"""
+		df_reviews, df_courses = self.data_preprocessing.surprise_preprocessing()
+		new_user_reviews = None
+		if preset:
+			if current_user_id not in df_reviews['ReviewerID'].unique():
+				raise ValueError(f'User: "{current_user_id}" not found in the database. Please try another user.')
+			user_id = current_user_id
+		else:
+			if user_data is None or 'CourseID' not in user_data.columns or 'RatingStar' not in user_data.columns:
+				raise ValueError(
+					'User data must be provided with "CourseID" and "RatingStar" columns when preset is False.')
+			user_id = str(uuid.uuid4())
+			new_user_reviews = pd.DataFrame(user_data)
+			new_user_reviews['ReviewerID'] = user_id
+			df_reviews = pd.concat([df_reviews, new_user_reviews], ignore_index=True)
+		
 		model_name = 'surprise_model.pkl'
 		algo = self._load_model(model_name)
 		
 		if not algo:
-			if current_user_id not in self.data_preprocessing.df_reviews['ReviewerID'].unique():
-				raise ValueError(f'User: "{current_user_id}" not found in the database. Please try another user.')
-			
-			df_reviews, df_courses = self.data_preprocessing.surprise_preprocessing()
+			algo = self._train_surprise(df_reviews, model_name)
+		
+		if not preset:
+			# Create a temporary dataset with the new user data
 			reader = Reader(rating_scale=(1, 5))
 			data = Dataset.load_from_df(df_reviews[['ReviewerID', 'CourseID', 'RatingStar']], reader)
-			algo = SVD()
-			cross_val_result = cross_validate(algo, data, measures=['RMSE', 'MAE'], cv=5, verbose=True)
-			print(f'Cross-validation results: {cross_val_result}')
-			train_set = data.build_full_trainset()
-			algo.fit(train_set)
-			self._save_model(algo, model_name)
-		else:
-			_, df_courses = self.data_preprocessing.surprise_preprocessing()
+			trainset = data.build_full_trainset()
+			algo.fit(trainset)
 		
 		all_courses = df_courses['CourseID'].unique()
-		predictions = [algo.predict(current_user_id, course) for course in all_courses]
+		predictions = [algo.predict(user_id, course) for course in all_courses]
 		recommendations = sorted(predictions, key=lambda x: x.est, reverse=True)[:num_recommendations]
 		recommended_courses = pd.DataFrame([(rec.iid, rec.est) for rec in recommendations],
 		                                   columns=['CourseID', 'EstimatedRating'])
 		recommended_courses = recommended_courses.merge(df_courses, on='CourseID', suffixes=('', '_course'))
 		
-		user_reviews = self.data_preprocessing.df_reviews[
-			self.data_preprocessing.df_reviews['ReviewerID'] == current_user_id]
-		user_reviews = user_reviews.merge(df_courses, on='CourseID', suffixes=('', '_course'))
+		if preset:
+			user_reviews = df_reviews[df_reviews['ReviewerID'] == current_user_id]
+			user_reviews = user_reviews.merge(df_courses, on='CourseID', suffixes=('', '_course'))
+		else:
+			user_reviews = new_user_reviews.merge(df_courses, on='CourseID', suffixes=('', '_course'))
 		
 		return recommended_courses[
 			['CourseID', 'CourseName', 'ReviewNumber', 'AvgStar', 'Level', 'Unit', 'Results', 'EstimatedRating']
@@ -170,7 +188,7 @@ class ProcessModels:
 			# Take the best model from the tuning exercise using ParamGridBuilder
 			best_model = model.bestModel
 			
-			# Save the best model with overwrite option
+			# Save the best model
 			best_model.write().overwrite().save(model_save_path)
 			
 			# Generate prediction and evaluate using RMSE
@@ -229,6 +247,18 @@ class ProcessModels:
 		
 		else:
 			raise ValueError(f'Mode: "{mode}" not recognized. Please use either "training" or "predict".')
+		
+	def _train_surprise(self, df_reviews, model_name='surprise_model.pkl'):
+		reader = Reader(rating_scale=(1, 5))
+		data = Dataset.load_from_df(df_reviews[['ReviewerID', 'CourseID', 'RatingStar']], reader)
+		algo = SVD()
+		cross_val_result = cross_validate(algo, data, measures=['RMSE', 'MAE'], cv=5, verbose=True)
+		print(f'Cross-validation results: {cross_val_result}')
+		train_set = data.build_full_trainset()
+		algo.fit(train_set)
+		self._save_model(algo, model_name)
+		
+		return algo
 	
 	def _save_model(self, model, model_name):
 		model_path = os.path.join(self.model_dir, model_name)

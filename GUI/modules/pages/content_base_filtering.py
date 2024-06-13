@@ -5,13 +5,26 @@ from GUI.modules.backend.recommendation_system import RecommendationSystem
 
 class ContentBaseFiltering:
 	def __init__(self):
-		self.title = "Recommendation System"
+		self.title = "Content-Based Filtering Recommendation"
 		self.widgets = Widgets()
 		self.recommendation_system = RecommendationSystem()
 	
 	def gen_page(self):
 		st.title(self.title)
+		st.divider()
+		st.info("Demo only, not production ready")
+
+		search_query, submit, n_recommendations = self._input()
 		
+		# Get the recommendations for the course entered by the user.
+		if submit:
+			with st.spinner(text="In progress"):
+				try:
+					self._get_recommendations(search_query=search_query, num_recommendations=n_recommendations)
+				except Exception as e:
+					st.error(f"An error occurred: {e}")
+				
+	def _input(self):
 		# A Searchbar for the user to input the name of the course they want to get recommendations for.
 		search_query, submit = self.widgets.search_bar(
 			label="Please enter the name of the Data Science course you want recommendations for:",
@@ -22,13 +35,10 @@ class ContentBaseFiltering:
 		n_recommendations = self.widgets.small_selectbox(
 			label="Number of Recommendations",
 			options=[10, 15, 20, 25],
-			index=1
+			index=0,
 		)
 		
-		# Get the recommendations for the course entered by the user.
-		if submit:
-			with st.spinner(text="In progress"):
-				self._get_recommendations(search_query=search_query, num_recommendations=n_recommendations)
+		return search_query, submit, n_recommendations
 	
 	def _get_recommendations(self, search_query: str, num_recommendations: int=10):
 		if not search_query:

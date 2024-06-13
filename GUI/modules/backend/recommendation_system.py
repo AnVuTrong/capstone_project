@@ -13,7 +13,7 @@ class RecommendationSystem:
 		user_search = user_search.strip()
 		df = self.recommendation.gensim_recommender(user_search, num_recommendations)
 		df = self._refactor_df(df)
-
+		
 		return df
 	
 	def get_cosine_recommendations(self, user_search, num_recommendations=10):
@@ -22,7 +22,17 @@ class RecommendationSystem:
 		df = self._refactor_df(df)
 		
 		return df
-
+	
+	def get_collaborative_recommendations(self, user_id=None, user_data=None, n_recommendations=10):
+		recommendations_df, user_history = self.recommendation.surprise_recommender(
+			current_user_id=user_id,
+			user_data=user_data,
+			num_recommendations=n_recommendations,
+			preset=False
+		)
+		
+		return recommendations_df, user_history
+	
 	def _refactor_df(self, df):
 		# Reset index, remove unnecessary columns, refactor column names
 		df.reset_index(inplace=True)

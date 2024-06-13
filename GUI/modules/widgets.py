@@ -51,3 +51,4 @@ class Widgets:
 		time.sleep(sleep_time)
 		if progress == 100:
 			st.success("Success")
+			

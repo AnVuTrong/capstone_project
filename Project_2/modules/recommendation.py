@@ -19,33 +19,53 @@ class Recommendation:
 	
 	def gensim_recommender(self, user_search, num_recommendations) -> pd.DataFrame:
 		"""Implement the Gensim model for content-based filtering"""
-		df_recommendations = self.process_model_module.process_gensim(
-			user_search,
-			num_recommendations=num_recommendations
-		)
+		try:
+			df_recommendations = self.process_model_module.process_gensim(
+				user_search,
+				num_recommendations=num_recommendations
+			)
+		except Exception as e:
+			raise e
 		return df_recommendations
 	
 	def cosine_similarity_recommender(self, user_search, num_recommendations) -> pd.DataFrame:
 		"""Implement the Cosine Similarity model for content-based filtering"""
-		df_recommendations = self.process_model_module.process_cosine_similarity(
-			user_search,
-			num_recommendations=num_recommendations
-		)
+		try:
+			df_recommendations = self.process_model_module.process_cosine_similarity(
+				user_search,
+				num_recommendations=num_recommendations
+			)
+		except Exception as e:
+			raise e
 		return df_recommendations
 	
-	def surprise_recommender(self, current_user_id, num_recommendations) -> pd.DataFrame:
+	def surprise_recommender(
+			self,
+			current_user_id=None,
+			user_data=None,
+			num_recommendations=10,
+			preset=True,
+	) -> pd.DataFrame:
 		"""Implement the Surprise model for collaborative filtering"""
-		df_recommendations, df_user_reviewed_courses = self.process_model_module.process_surprise(
-			current_user_id,
-			num_recommendations,
-		)
+		try:
+			df_recommendations, df_user_reviewed_courses = self.process_model_module.process_surprise(
+				current_user_id=current_user_id,
+				user_data=user_data,
+				num_recommendations=num_recommendations,
+				preset=preset,
+			)
+		except Exception as e:
+			raise e
 		return df_recommendations, df_user_reviewed_courses
 	
 	def pyspark_recommender(self, current_user_id, num_recommendations, mode, model_save_path) -> pd.DataFrame:
-		df_recommendations, df_user_reviewed_courses = self.process_model_module.process_pyspark(
-			current_user_id,
-			num_recommendations,
-			mode,
-			model_save_path=model_save_path,
-		)
+		try:
+			df_recommendations, df_user_reviewed_courses = self.process_model_module.process_pyspark(
+				current_user_id,
+				num_recommendations,
+				mode,
+				model_save_path=model_save_path,
+			)
+		except Exception as e:
+			raise e
 		return df_recommendations, df_user_reviewed_courses
