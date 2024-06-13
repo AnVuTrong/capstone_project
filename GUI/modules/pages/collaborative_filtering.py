@@ -130,19 +130,19 @@ class CollaborateFiltering:
 		selected_courses = st.multiselect("Select courses", course_names)
 		
 		if selected_courses:
-			selected_courses_df = courses_df[courses_df['CourseName'].isin(selected_courses)]
+			selected_courses_df  = courses_df[courses_df['CourseName'].isin(selected_courses)]
 			ratings = {}
-			for course in selected_courses:
-				rating = st.slider(f"Rate {course}", min_value=1, max_value=5, value=3)
-				ratings[course] = rating
-			
-			user_data = pd.DataFrame({
-				'CourseName': selected_courses,
-				'RatingStar': [ratings[course] for course in selected_courses],
-				'CourseID'  : selected_courses_df['CourseID'],
-			})
-			
-			return user_data
+			with st.popover("Edit Ratings"):
+				for course in selected_courses:
+					rating = st.slider(f"Rate {course}", min_value=1, max_value=5, value=3)
+					ratings[course] = rating
+				
+				user_data = pd.DataFrame({
+					'CourseID': selected_courses_df['CourseID'],
+					'RatingStar': [ratings[course] for course in selected_courses],
+				})
+				
+				return user_data
 		else:
 			st.warning("Please select at least one course.")
 			return pd.DataFrame(columns=['CourseID', 'RatingStar'])
@@ -152,26 +152,27 @@ class CollaborateFiltering:
 		num_courses = st.slider("Number of courses to generate", min_value=1, max_value=20, value=5)
 		
 		user_data = generate_random_user_data(courses_df, num_courses=num_courses)
-		
+		selected_courses = courses_df[courses_df['CourseID'].isin(user_data['CourseID'])]
 		st.write("Generated random user data:")
-		st.dataframe(user_data)
+		st.dataframe(selected_courses)
 		
 		return user_data
 	
 	def _edit_user_data(self, user_data):
 		if not user_data.empty:
-			st.write("Edit your data:")
-			editable_data = user_data.copy()
-			
-			for index, row in editable_data.iterrows():
-				new_rating = st.slider(f"Edit rating for Course ID {row['CourseID']}", min_value=1, max_value=5,
-				                       value=row['RatingStar'])
-				editable_data.at[index, 'RatingStar'] = new_rating
-			
-			st.write("Updated user data:")
-			st.dataframe(editable_data)
-			
-			return editable_data
+			with st.popover("Edit Ratings"):
+				st.write("Edit your data:")
+				editable_data = user_data.copy()
+				
+				for index, row in editable_data.iterrows():
+					new_rating = st.slider(f"Edit rating for Course ID {row['CourseID']}", min_value=1, max_value=5,
+					                       value=row['RatingStar'])
+					editable_data.at[index, 'RatingStar'] = new_rating
+				
+				st.write("Updated user data:")
+				st.dataframe(editable_data)
+				
+				return editable_data
 		else:
 			st.warning("No user data to edit.")
 			return user_data

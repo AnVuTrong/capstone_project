@@ -39,17 +39,37 @@ class RecommendationSystem:
 			preset=preset
 		)
 		
+		recommendations_df = self._refactor_df(recommendations_df)
+		
 		return recommendations_df, user_history
 	
 	def _refactor_df(self, df):
-		# Reset index, remove unnecessary columns, refactor column names
-		df.reset_index(inplace=True)
-		df.drop(columns=['index', 'ReviewNumber', 'SimilarityScore'], inplace=True)
-		df.rename(columns={
+		# Reset index
+		df.reset_index(inplace=True, drop=True)
+		
+		# List of columns to drop
+		columns_to_drop = ['index', 'ReviewNumber', 'SimilarityScore', 'CourseID']
+		
+		# Attempt to drop columns
+		for column in columns_to_drop:
+			try:
+				df.drop(columns=[column], inplace=True)
+			except KeyError:
+				continue
+		
+		# Dictionary of columns to rename
+		columns_to_rename = {
 			'CourseName': 'Course Name',
 			'AvgStar'   : 'Rating',
 			'Unit'      : 'Provider',
 			'Results'   : 'Description'
-		}, inplace=True)
+		}
+		
+		# Attempt to rename columns
+		for old_name, new_name in columns_to_rename.items():
+			try:
+				df.rename(columns={old_name: new_name}, inplace=True)
+			except KeyError:
+				continue
 		
 		return df
