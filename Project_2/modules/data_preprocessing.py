@@ -126,6 +126,13 @@ class DataPreprocessing:
 		user_ids = self.df_reviews[['ReviewerName', 'ReviewerID']].drop_duplicates()
 		return user_ids
 	
+	def get_user_history(self, user_id):
+		"""Get all courses that a user has reviewed"""
+		self.load_data()
+		self.create_reviewers_and_courses_id()
+		user_courses = self.df_reviews[self.df_reviews['ReviewerID'] == user_id]
+		return user_courses
+	
 	def create_reviewers_and_courses_id(self):
 		"""Create unique IDs for Reviewers and Courses"""
 		self.load_data()

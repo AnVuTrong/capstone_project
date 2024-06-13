@@ -31,13 +31,12 @@ class ContentBaseFiltering:
 			button_text="Search",
 			result_text="Searching Coursera"
 		)
-		
-		n_recommendations = self.widgets.small_selectbox(
-			label="Number of Recommendations",
-			options=[10, 15, 20, 25],
-			index=0,
-		)
-		
+		with st.popover("Setting"):
+			n_recommendations = self.widgets.small_selectbox(
+				label="Number of Recommendations",
+				options=[10, 15, 20, 25],
+				index=0,
+			)
 		return search_query, submit, n_recommendations
 	
 	def _get_recommendations(self, search_query: str, num_recommendations: int=10):
