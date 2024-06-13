@@ -1,3 +1,5 @@
+import pandas as pd
+
 from Project_2.modules.data_preprocessing import DataPreprocessing
 from Project_2.modules.models import ProcessModels
 from Project_2.modules.recommendation import Recommendation
@@ -5,8 +7,12 @@ from Project_2.modules.recommendation import Recommendation
 
 class RecommendationSystem:
 	def __init__(self):
+		data_preprocessing = DataPreprocessing(
+			path_courses='Project_2/data/courses.csv',
+			path_reviews='Project_2/data/reviews.csv',
+		)
 		self.recommendation = Recommendation(
-			process_model_module=ProcessModels(DataPreprocessing(), spark=None, model_dir='Project_2/models/')
+			process_model_module=ProcessModels(data_preprocessing, spark=None, model_dir='Project_2/models/')
 		)
 	
 	def get_gensim_recommendations(self, user_search, num_recommendations=10):
@@ -23,12 +29,14 @@ class RecommendationSystem:
 		
 		return df
 	
-	def get_collaborative_recommendations(self, user_id=None, user_data=None, n_recommendations=10):
+	def get_collaborative_recommendations(self, user_id=None, user_data=None, n_recommendations=10, preset=True):
+		if isinstance(user_data, pd.DataFrame):
+			user_data = user_data[['CourseID', 'RatingStar']]
 		recommendations_df, user_history = self.recommendation.surprise_recommender(
 			current_user_id=user_id,
 			user_data=user_data,
 			num_recommendations=n_recommendations,
-			preset=False
+			preset=preset
 		)
 		
 		return recommendations_df, user_history

@@ -88,7 +88,7 @@ class ProcessModels:
 			user_data=None,
 			num_recommendations=10,
 			preset=True,
-	) -> pd.DataFrame:
+	) -> (pd.DataFrame, pd.DataFrame):
 		"""Process the data for Surprise model"""
 		df_reviews, df_courses = self.data_preprocessing.surprise_preprocessing()
 		new_user_reviews = None

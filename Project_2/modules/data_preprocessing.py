@@ -118,6 +118,11 @@ class DataPreprocessing:
 		except LookupError:
 			nltk.download('stopwords')
 			nltk.download('punkt')
+		except AttributeError:
+			nltk.download('stopwords')
+			nltk.download('punkt')
+		except Exception as e:
+			raise e
 	
 	def get_all_user_ids(self):
 		"""Get all unique ReviewerIDs and corresponding ReviewerNames"""
@@ -132,6 +137,13 @@ class DataPreprocessing:
 		self.create_reviewers_and_courses_id()
 		user_courses = self.df_reviews[self.df_reviews['ReviewerID'] == user_id]
 		return user_courses
+	
+	def get_all_courses(self):
+		"""Get all available courses"""
+		self.load_data()
+		self.create_reviewers_and_courses_id()
+		courses = self.df_courses.drop_duplicates()
+		return courses
 	
 	def create_reviewers_and_courses_id(self):
 		"""Create unique IDs for Reviewers and Courses"""

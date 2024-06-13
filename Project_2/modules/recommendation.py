@@ -45,7 +45,7 @@ class Recommendation:
 			user_data=None,
 			num_recommendations=10,
 			preset=True,
-	) -> pd.DataFrame:
+	) -> (pd.DataFrame, pd.DataFrame):
 		"""Implement the Surprise model for collaborative filtering"""
 		try:
 			df_recommendations, df_user_reviewed_courses = self.process_model_module.process_surprise(
@@ -54,6 +54,8 @@ class Recommendation:
 				num_recommendations=num_recommendations,
 				preset=preset,
 			)
+			df_recommendations = pd.DataFrame(df_recommendations)
+			df_user_reviewed_courses = pd.DataFrame(df_user_reviewed_courses)
 		except Exception as e:
 			raise e
 		return df_recommendations, df_user_reviewed_courses
