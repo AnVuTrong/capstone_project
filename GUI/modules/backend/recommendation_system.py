@@ -18,14 +18,14 @@ class RecommendationSystem:
 	def get_gensim_recommendations(self, user_search, num_recommendations=10):
 		user_search = user_search.strip()
 		df = self.recommendation.gensim_recommender(user_search, num_recommendations)
-		df = self._refactor_df(df)
+		df = self.refactor_df_for_display(df)
 		
 		return df
 	
 	def get_cosine_recommendations(self, user_search, num_recommendations=10):
 		user_search = user_search.strip()
 		df = self.recommendation.cosine_similarity_recommender(user_search, num_recommendations)
-		df = self._refactor_df(df)
+		df = self.refactor_df_for_display(df)
 		
 		return df
 	
@@ -39,12 +39,12 @@ class RecommendationSystem:
 			preset=preset
 		)
 		
-		recommendations_df = self._refactor_df(recommendations_df)
-		user_history = self._refactor_df(user_history)
+		recommendations_df = self.refactor_df_for_display(recommendations_df)
+		user_history = self.refactor_df_for_display(user_history)
 		
 		return recommendations_df, user_history
 	
-	def _refactor_df(self, df):
+	def refactor_df_for_display(self, df):
 		# Reset index
 		df.reset_index(inplace=True, drop=True)
 		
@@ -79,4 +79,6 @@ class RecommendationSystem:
 			except KeyError:
 				continue
 		
+		# Reset index
+		df.reset_index(inplace=True, drop=True)
 		return df

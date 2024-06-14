@@ -28,7 +28,7 @@ class DataPreprocessing:
 		
 		self.df_courses = None
 		self.df_reviews = None
-		self.download_nltk_resources()
+		
 	
 	def load_data(self):
 		"""Load the data from the specified paths"""
@@ -41,6 +41,7 @@ class DataPreprocessing:
 		"""Pre-process the data for Gensim model"""
 		# Reload the data before processing
 		self.load_data()
+		self.download_nltk_resources()
 		
 		# Tokenize the courses
 		self.df_courses['Combined'] = (
@@ -166,3 +167,4 @@ class DataPreprocessing:
 			
 			self.df_courses.to_csv(self.path_courses, index=False)
 			self.df_reviews.to_csv(self.path_reviews, index=False)
+	

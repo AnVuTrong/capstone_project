@@ -40,8 +40,9 @@ class CollaborateFiltering:
 	def _input(self):
 		with st.popover("Setting"):
 			data_type = st.radio(
-				"Choose input type:",
-				("Preset Data", "Input Data")
+				"Choose how to generate user's history:",
+				("Preset Data", "Input Data"),
+				index=1,
 			)
 			
 			n_recommendations = self.widgets.small_selectbox(
@@ -71,7 +72,7 @@ class CollaborateFiltering:
 	
 	def _input_data(self):
 		method = st.radio(
-			"Choose method:",
+			"Choose user history method:",
 			("Choose courses", "Random courses")
 		)
 		
@@ -160,29 +161,10 @@ class CollaborateFiltering:
 		num_courses = st.slider("Number of courses to generate", min_value=1, max_value=20, value=5)
 		
 		user_data = generate_random_user_data(courses_df, num_courses=num_courses)
-		st.write("Generated random user data:")
-		user_data = self._edit_user_data(user_data)
-		selected_courses = courses_df[courses_df['CourseID'].isin(user_data['CourseID'])]
-		
+		st.warning("Generated random user data:")
+		selected_courses = courses_df[courses_df['CourseID'].isin(user_data['CourseID'])].copy()
+		selected_courses = self.recommendation_system.refactor_df_for_display(selected_courses)
 		st.dataframe(selected_courses)
 		
 		return user_data
 	
-	def _edit_user_data(self, user_data):
-		if not user_data.empty:
-			with st.popover("Edit Ratings"):
-				st.write("Edit your data:")
-				editable_data = user_data.copy()
-				
-				for index, row in editable_data.iterrows():
-					new_rating = st.slider(f"Edit rating for Course ID {row['CourseID']}", min_value=1, max_value=5,
-					                       value=row['RatingStar'])
-					editable_data.at[index, 'RatingStar'] = new_rating
-				
-				st.write("Updated user data:")
-				st.dataframe(editable_data)
-				
-				return editable_data
-		else:
-			st.warning("No user data to edit.")
-			return user_data
