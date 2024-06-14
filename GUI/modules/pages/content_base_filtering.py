@@ -5,12 +5,12 @@ from GUI.modules.backend.recommendation_system import RecommendationSystem
 
 class ContentBaseFiltering:
 	def __init__(self):
-		self.title = "Content-Based Filtering Recommendation"
+		self.header = "Recommendation for new users"
 		self.widgets = Widgets()
 		self.recommendation_system = RecommendationSystem()
 	
 	def gen_page(self):
-		st.title(self.title)
+		st.header(self.header)
 		st.write("Recommendations for new users are generated using content-based filtering techniques, specifically Gensim, cosine similarity.")
 		st.image("GUI/img/Picture3.png")
 		st.write ("Please provide some of the following information so we can help recommend suitable Data Science courses for you on Coursera.")
@@ -56,11 +56,13 @@ class ContentBaseFiltering:
 				self.widgets.progress_bar(100)
 				st.write("Gensim Recommendations:")
 				st.dataframe(gensim_recommendations_df)
+				self.widgets.display_courses_to_columns(gensim_recommendations_df)
 			
 			with tab2:
 				self.widgets.progress_bar(100)
 				st.write("Cosine Similarity Recommendations:")
 				st.dataframe(cosine_recommendations_df)
+				self.widgets.display_courses_to_columns(cosine_recommendations_df)
 	
 	def _run_model(self, search_query: str, num_recommendations: int = 10):
 		gensim_recommendations_df = None

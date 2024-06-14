@@ -1,3 +1,5 @@
+import random
+
 import streamlit as st
 import time
 
@@ -51,7 +53,31 @@ class Widgets:
 		time.sleep(sleep_time)
 		if progress == 100:
 			st.success("Success")
-			
-	def custom_filter(self):
-		pass
 	
+	def display_courses_to_columns(self, df, n_columns=3, height=350):
+		""" Display courses from a dataframe using columns """
+		cols = st.columns(n_columns)
+		for index, row in df.iterrows():
+			col = cols[index % n_columns]
+			with col:
+				with st.container(border=True, height=height):
+					st.markdown(f"##### {row['Course Name']}")
+					st.write(":green[By]", f":blue-background[{row['Provider']}]")
+					delta = round(random.uniform(0, 1), 1)
+					self._change_metric_size()
+					st.metric(label="Average rating: ", value=f"⭐{row['Average Rating']}", delta=delta)
+					st.text(f"Level: {row['Level']}")
+					with st.popover("Description"):
+						st.write(row['Description'])
+	
+	def _change_metric_size(self, size: int = 20):
+		st.markdown(
+			f"""
+	        <style>
+	        [data-testid="stMetricValue"] {{
+	            font-size: {size}px;
+	        }}
+	        </style>
+	        """,
+			unsafe_allow_html=True,
+		)

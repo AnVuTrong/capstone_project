@@ -8,7 +8,7 @@ from Project_2.modules.helpers import generate_random_user_data
 
 class CollaborateFiltering:
 	def __init__(self):
-		self.title = "Collaborative Filtering Recommendation"
+		self.header = "Recommendation for existing users"
 		self.widgets = Widgets()
 		self.recommendation_system = RecommendationSystem()
 		self.data_preprocessing = DataPreprocessing(
@@ -17,7 +17,7 @@ class CollaborateFiltering:
 		)
 	
 	def gen_page(self):
-		st.title(self.title)
+		st.header(self.header)
 		st.write("Recommendations for existing users are generated using Collaborative filtering by Surprise.")
 		st.image("GUI/img/Picture4.png")
 		st.image("GUI/img/Picture5.png")
@@ -48,18 +48,6 @@ class CollaborateFiltering:
 				index=1,
 			)
 		
-		# filter_null_description = self.widgets.custom_filter(
-		# 	label="Removed courses with Null description",
-		# 	default=True,
-		# 	options=[True, False],
-		# )
-		#
-		# null_level = self.widgets.custom_filter(
-		# 	label="Removed courses with Null level",
-		# 	default=True,
-		# 	options=[True, False],
-		# )
-		
 		if data_type == "Preset Data":
 			user_id = self._preset_data()
 			user_data = None
@@ -87,7 +75,6 @@ class CollaborateFiltering:
 			user_data = self._choose_courses()
 		else:
 			user_data = self._random_courses()
-			user_data = self._edit_user_data(user_data)
 		
 		return user_data
 	
@@ -103,6 +90,7 @@ class CollaborateFiltering:
 		with recommendations:
 			st.write("Recommendations:")
 			st.dataframe(recommendations_df)
+			self.widgets.display_courses_to_columns(recommendations_df)
 		with user_history:
 			st.write("User History:")
 			st.dataframe(user_history_df)
@@ -166,8 +154,10 @@ class CollaborateFiltering:
 		num_courses = st.slider("Number of courses to generate", min_value=1, max_value=20, value=5)
 		
 		user_data = generate_random_user_data(courses_df, num_courses=num_courses)
-		selected_courses = courses_df[courses_df['CourseID'].isin(user_data['CourseID'])]
 		st.write("Generated random user data:")
+		user_data = self._edit_user_data(user_data)
+		selected_courses = courses_df[courses_df['CourseID'].isin(user_data['CourseID'])]
+
 		st.dataframe(selected_courses)
 		
 		return user_data
