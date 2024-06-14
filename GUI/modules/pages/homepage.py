@@ -5,8 +5,7 @@ class Homepage:
 	def __init__(self):
 		self.title = "Homepage"
 		
-	def gen_homepage(self):
-		st.divider()
+	def gen_page(self):
 		st.title(self.title)
 		st.markdown("***1. Introduction to the project***")
 		st.write("This project aims to develop a Recommender System to suggest courses to users. The target audience consists of two types of users:")
@@ -25,3 +24,4 @@ class Homepage:
 		
 		st.markdown("***3. Introduction to data collection***")
 		st.write("Analytical data is collected from course information from Coursera (879 courses) and course reviews (223,543 reviews).")
+		

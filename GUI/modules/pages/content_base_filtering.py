@@ -10,9 +10,7 @@ class ContentBaseFiltering:
 		self.recommendation_system = RecommendationSystem()
 	
 	def gen_page(self):
-		st.divider()
 		st.title(self.title)
-		
 		st.write("Recommendations for new users are generated using content-based filtering techniques, specifically Gensim, cosine similarity.")
 		st.image("GUI/img/Picture3.png")
 		st.write ("Please provide some of the following information so we can help recommend suitable Data Science courses for you on Coursera.")

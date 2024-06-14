@@ -14,7 +14,7 @@ class PageManager:
 		self.widget_test = widget_test.WidgetTest()
 	
 	def gen_homepage(self):
-		self.homepage.gen_homepage()
+		self.homepage.gen_page()
 	
 	def gen_content_base_filtering_page(self):
 		self.content_base_filtering.gen_page()
