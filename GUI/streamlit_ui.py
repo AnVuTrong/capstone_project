@@ -10,5 +10,6 @@ class StreamlitUI:
 	
 	def run(self):
 		st.title(self.title)
+		st.divider()
 		self.sidebar.draw_sidebar()
 		

@@ -5,12 +5,19 @@ from GUI.modules.page_manager import PageManager
 
 class Sidebar:
 	def __init__(self):
-		self.title = "Navigation Menu"
+		self.header = "Navigation Menu"
 		self.options = [
-			"Home",
-			"Recommendation for new users",
-			"Recommendation for existing users",
+			"**Home**",
+			"**About us**",
+			"**Searching courses**",
+			"**Courses for you**",
 			# "UI Test",
+		]
+		self.captions = [
+			"***:grey[Introduction of the project]***",
+			"***:grey[Introduce myself and team-member]***",
+			"***:grey[Recommendation for new users using content-based filtering]***",
+			"***:grey[Recommendation for existing users using collaborative filtering]***",
 		]
 		
 		self.page_mng = PageManager()
@@ -18,25 +25,30 @@ class Sidebar:
 	
 	def draw_sidebar(self):
 		with st.sidebar:
-			st.header(self.title)
-			st.divider()
-			selected_option = st.sidebar.selectbox("Please select a below tab:", self.options)
+			st.header(self.header)
+			selected_option = st.sidebar.radio(
+				label="Please select a page:",
+				options=self.options,
+				captions=self.captions,
+			)
 			st.image(self.image)
-			self._github()
 			st.divider()
-			
+			self._github()
 		
-		if selected_option == "Home":
+		if selected_option == "**Home**":
 			self.page_mng.gen_homepage()
 		
-		elif selected_option == "Recommendation for new users":
+		elif selected_option == "**About us**":
+			self.page_mng.gen_about_us_page()
+		
+		elif selected_option == "**Searching courses**":
 			self.page_mng.gen_content_base_filtering_page()
 		
-		elif selected_option == "Recommendation for existing users":
+		elif selected_option == "**Courses for you***":
 			self.page_mng.gen_collaborative_filtering_page()
-		
-		# elif selected_option == "UI Test":
-		# 	self.page_mng.gen_testing_widgets()
+	
+	# elif selected_option == "UI Test":
+	# 	self.page_mng.gen_testing_widgets()
 	
 	def _github(self):
 		""" Redirect to Github """
@@ -46,4 +58,3 @@ class Sidebar:
 		else:
 			click = st.button("Github")
 			st.info(f"Project will be open-sourced on {date_of_release.strftime('%Y-%m-%d')}") if click else None
-			
