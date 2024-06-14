@@ -13,7 +13,7 @@ class Sidebar:
 		]
 		
 		self.page_mng = PageManager()
-		self.image = "GUI/img/Picture2.webp"
+		self.image = "GUI/img/Picture2.png"
 	
 	def draw_sidebar(self):
 		st.sidebar.title(self.title)
