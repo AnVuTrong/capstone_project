@@ -96,3 +96,4 @@ class WidgetTest:
 		
 		# A plotly chart
 		st.plotly_chart(self.fig)
+	

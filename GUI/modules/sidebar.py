@@ -16,6 +16,7 @@ class Sidebar:
 	
 	def draw_sidebar(self):
 		st.sidebar.title(self.title)
+		st.logo("GUI/img/lotus_logo.png")
 		selected_option = st.sidebar.selectbox("Select an demo", self.options)
 		if selected_option == "Home":
 			self.page_mng.gen_homepage()

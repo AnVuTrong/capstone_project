@@ -52,3 +52,6 @@ class Widgets:
 		if progress == 100:
 			st.success("Success")
 			
+	def custom_filter(self):
+		pass
+	

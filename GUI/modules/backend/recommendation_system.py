@@ -40,12 +40,18 @@ class RecommendationSystem:
 		)
 		
 		recommendations_df = self._refactor_df(recommendations_df)
+		user_history = self._refactor_df(user_history)
 		
 		return recommendations_df, user_history
 	
 	def _refactor_df(self, df):
 		# Reset index
 		df.reset_index(inplace=True, drop=True)
+		
+		# Sort by SimilarityScore then by AvgStar if they are present
+		columns_to_sort_by = ['SimilarityScore', 'AvgStar']
+		if set(columns_to_sort_by).issubset(df.columns):
+			df.sort_values(by=columns_to_sort_by, ascending=[False, False], inplace=True)
 		
 		# List of columns to drop
 		columns_to_drop = ['index', 'ReviewNumber', 'SimilarityScore', 'CourseID']
@@ -60,9 +66,10 @@ class RecommendationSystem:
 		# Dictionary of columns to rename
 		columns_to_rename = {
 			'CourseName': 'Course Name',
-			'AvgStar'   : 'Rating',
+			'AvgStar'   : 'Average Rating',
 			'Unit'      : 'Provider',
-			'Results'   : 'Description'
+			'Results'   : 'Description',
+			'RatingStar': 'User Rating',
 		}
 		
 		# Attempt to rename columns

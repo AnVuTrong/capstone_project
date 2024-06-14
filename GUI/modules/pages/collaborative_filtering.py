@@ -19,7 +19,7 @@ class CollaborateFiltering:
 	def gen_page(self):
 		st.title(self.title)
 		st.divider()
-		st.info("Demo only, not production ready")
+		st.info("You can change configurations in the settings.")
 		
 		data_type, n_recommendations, user_id, user_data, preset = self._input()
 		
@@ -42,20 +42,32 @@ class CollaborateFiltering:
 			
 			n_recommendations = self.widgets.small_selectbox(
 				label="Number of Recommendations",
-				options=[10, 15, 20, 25],
-				index=0,
+				options=[1, 5, 10, 15, 20, 25],
+				index=1,
 			)
-		
-		if data_type == "Preset Data":
-			user_id = self._preset_data()
-			user_data = None
-			preset = True
-		else:
-			user_id = None
-			user_data = self._input_data()
-			preset = False
-		
-		return data_type, n_recommendations, user_id, user_data, preset
+			
+			# filter_null_description = self.widgets.custom_filter(
+			# 	label="Removed courses with Null description",
+			# 	default=True,
+			# 	options=[True, False],
+			# )
+			#
+			# null_level = self.widgets.custom_filter(
+			# 	label="Removed courses with Null level",
+			# 	default=True,
+			# 	options=[True, False],
+			# )
+			
+			if data_type == "Preset Data":
+				user_id = self._preset_data()
+				user_data = None
+				preset = True
+			else:
+				user_id = None
+				user_data = self._input_data()
+				preset = False
+			
+			return data_type, n_recommendations, user_id, user_data, preset
 	
 	def _preset_data(self):
 		with st.spinner(text="Load users..."):
@@ -130,7 +142,7 @@ class CollaborateFiltering:
 		selected_courses = st.multiselect("Select courses", course_names)
 		
 		if selected_courses:
-			selected_courses_df  = courses_df[courses_df['CourseName'].isin(selected_courses)]
+			selected_courses_df = courses_df[courses_df['CourseName'].isin(selected_courses)]
 			ratings = {}
 			with st.popover("Edit Ratings"):
 				for course in selected_courses:
@@ -138,7 +150,7 @@ class CollaborateFiltering:
 					ratings[course] = rating
 				
 				user_data = pd.DataFrame({
-					'CourseID': selected_courses_df['CourseID'],
+					'CourseID'  : selected_courses_df['CourseID'],
 					'RatingStar': [ratings[course] for course in selected_courses],
 				})
 				
@@ -176,4 +188,3 @@ class CollaborateFiltering:
 		else:
 			st.warning("No user data to edit.")
 			return user_data
-	

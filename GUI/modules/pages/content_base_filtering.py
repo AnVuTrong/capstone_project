@@ -12,7 +12,7 @@ class ContentBaseFiltering:
 	def gen_page(self):
 		st.title(self.title)
 		st.divider()
-		st.info("Demo only, not production ready")
+		st.info("You can change configurations in the settings.")
 
 		search_query, submit, n_recommendations = self._input()
 		
@@ -34,8 +34,8 @@ class ContentBaseFiltering:
 		with st.popover("Setting"):
 			n_recommendations = self.widgets.small_selectbox(
 				label="Number of Recommendations",
-				options=[10, 15, 20, 25],
-				index=0,
+				options=[1, 5, 10, 15, 20, 25],
+				index=1,
 			)
 		return search_query, submit, n_recommendations
 	
