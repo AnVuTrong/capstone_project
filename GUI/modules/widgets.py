@@ -26,7 +26,7 @@ class Widgets:
 		
 		# Print the value of the search bar
 		if submit:
-			st.write(f"{result_text}: {search_query}")
+			st.info(f"{result_text}: {search_query}")
 		
 		return search_query, submit
 	
@@ -74,7 +74,7 @@ class Widgets:
 	def show_raw_dataframe(self, df):
 		""" Display the raw dataframe """
 		st.divider()
-		st.write("Raw Dataframe:")
+		st.info("Raw Dataframe:")
 		st.dataframe(df)
 		st.divider()
 	

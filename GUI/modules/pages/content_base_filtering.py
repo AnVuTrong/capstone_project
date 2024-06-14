@@ -11,6 +11,7 @@ class ContentBaseFiltering:
 	
 	def gen_page(self):
 		st.header(self.header)
+		st.divider()
 		st.write(
 			"Recommendations for new users are generated using content-based filtering techniques, specifically Gensim, cosine similarity.")
 		st.image("GUI/img/Picture3.png")
@@ -34,11 +35,6 @@ class ContentBaseFiltering:
 	
 	def _input(self):
 		# A Searchbar for the user to input the name of the course they want to get recommendations for.
-		search_query, submit = self.widgets.search_bar(
-			label="What do you want to learn? Please input related keywords.",
-			button_text="Click to get recommendations",
-			result_text="Searching Coursera"
-		)
 		with st.popover("Setting"):
 			n_recommendations = self.widgets.small_selectbox(
 				label="Number of Recommendations",
@@ -47,6 +43,13 @@ class ContentBaseFiltering:
 			)
 			
 			show_dataframe = st.checkbox("Show Dataframe", value=False)
+		
+		search_query, submit = self.widgets.search_bar(
+			label="What do you want to learn? Please input related keywords.",
+			button_text="Click to get recommendations",
+			result_text="Searching Coursera"
+		)
+		
 		return search_query, submit, n_recommendations, show_dataframe
 	
 	def _get_recommendations(self, search_query: str, num_recommendations: int = 10, show_dataframe: bool = False):
@@ -59,15 +62,14 @@ class ContentBaseFiltering:
 			)
 			
 			tab1, tab2 = st.tabs(["Gensim", "Cosine Similarity"])
+			self.widgets.progress_bar(100)
 			
 			with tab1:
-				self.widgets.progress_bar(100)
 				if show_dataframe:
 					self.widgets.show_raw_dataframe(df=gensim_recommendations_df)
 				self.widgets.display_courses_to_columns(gensim_recommendations_df)
 			
 			with tab2:
-				self.widgets.progress_bar(100)
 				if show_dataframe:
 					self.widgets.show_raw_dataframe(df=cosine_recommendations_df)
 				self.widgets.display_courses_to_columns(cosine_recommendations_df)

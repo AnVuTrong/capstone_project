@@ -18,6 +18,7 @@ class CollaborateFiltering:
 	
 	def gen_page(self):
 		st.header(self.header)
+		st.divider()
 		st.write("Recommendations for existing users are generated using Collaborative filtering by Surprise.")
 		st.image("GUI/img/Picture4.png")
 		st.image("GUI/img/Picture5.png")

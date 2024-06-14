@@ -44,7 +44,7 @@ class Sidebar:
 		elif selected_option == "**Searching courses**":
 			self.page_mng.gen_content_base_filtering_page()
 		
-		elif selected_option == "**Courses for you***":
+		elif selected_option == "**Courses for you**":
 			self.page_mng.gen_collaborative_filtering_page()
 	
 	# elif selected_option == "UI Test":

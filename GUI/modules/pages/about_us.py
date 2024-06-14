@@ -4,51 +4,37 @@ import streamlit as st
 class AboutUs:
 	def __init__(self):
 		self.header = "About Us"
+		self.img_path = "GUI/img/"
+		self.vta = f"{self.img_path}vta.png"
+		self.lthb = f"{self.img_path}lthb.png"
 	
 	def gen_page(self):
 		""" Introduce myself and team-member """
 		st.header(self.header)
-		
-		st.write(
-			"""
-			This is my capstone project for the Data Science course.
-			"""
-		)
-		
-		self._portraits()
+		st.divider()
+		col1, col2 = st.columns(2, gap='large')
+		with col1:
+			self._portraits(
+				img=self.vta,
+				name="Vu Trong An",
+				description="I am a student at the CSC. I am passionate about data science and machine learning."
+			)
+		with col2:
+			self._portraits(
+				img=self.lthb,
+				name="Le Thi Hai Binh",
+				description="I am a teacher at UEH, I'm joining the project to better support my researches."
+			)
 	
-	def _portraits(self):
-		img_path = "GUI/img/"
-		vta = f"{img_path}vta.jpg"
-		lthb = f"{img_path}lthb.jpg"
-		
-		# Apply CSS to make the image round
-		st.markdown(
-			"""
-			<style>
-			.round-image {
-				border-radius: 50%;
-				width: 200px;
-				height: 200px;
-				object-fit: cover;
-			}
-			</style>
-			""",
-			unsafe_allow_html=True
-		)
-		
-		# Display images using Streamlit's st.image
-		st.markdown(f'<img src="{vta}" class="round-image">', unsafe_allow_html=True)
-		st.write(
-			"""
-			An Vu Trong is a student at the University of Science, Ho Chi Minh City. He is passionate about Data Science,
-			especially in the field of recommendation systems. He is the author of this project.
-			"""
-		)
-		
-		st.markdown(f'<img src="{lthb}" class="round-image">', unsafe_allow_html=True)
-		st.write(
-			"""
-			Le Thi Hai Binh is a teacher at the University of Science, Ho Chi Minh City. She is the mentor of this project.
-			"""
-		)
+	def _portraits(self, img, name, description):
+		# with st.container(border=True, height=600):
+			st.image(img)
+			st.write("")
+			st.subheader(name)
+			st.write(
+				description
+			)
+			click = st.button("Contact", key=name)
+			if click:
+				st.warning("No contact information available.")
+				
