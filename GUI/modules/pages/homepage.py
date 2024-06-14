@@ -6,7 +6,8 @@ class Homepage:
 		self.title = "Homepage"
 		
 	def gen_homepage(self):
-		st.markdown("Welcome to the homepage!")
+		st.divider()
+		st.title(self.title)
 		st.markdown("***1. Introduction to the project***")
 		st.write("This project aims to develop a Recommender System to suggest courses to users. The target audience consists of two types of users:")
 		st.write("-	New users seeking courses that align with their personal objectives.")

@@ -13,7 +13,7 @@ class WidgetTest:
 		
 	
 	def gen_testing_widgets(self):
-		st.write("You selected Option 1")
+		st.write("Testing widgets")
 		# A slider widget
 		st.slider("Slider", 0, 100, 50)
 		

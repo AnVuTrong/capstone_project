@@ -4,7 +4,7 @@ from GUI.modules.page_manager import PageManager
 
 class Sidebar:
 	def __init__(self):
-		self.title = "Sidebar"
+		self.title = "Navigation Menu"
 		self.options = [
 			"Home",
 			"Content-based filtering Recommendation",
@@ -17,7 +17,8 @@ class Sidebar:
 	
 	def draw_sidebar(self):
 		st.sidebar.title(self.title)
-		selected_option = st.sidebar.selectbox("Please select below tab", self.options)
+		st.divider()
+		selected_option = st.sidebar.selectbox("Please select a below tab:", self.options)
 		if selected_option == "Home":
 			self.page_mng.gen_homepage()
 		
