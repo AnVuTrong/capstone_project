@@ -12,6 +12,9 @@ class ContentBaseFiltering:
 	def gen_page(self):
 		st.title(self.title)
 		st.divider()
+		st.write("Recommendations for new users are generated using content-based filtering techniques, specifically Gensim, cosine similarity.")
+		st.image("GUI/img/Picture3.png")
+		st.write ("Please provide some of the following information so we can help recommend suitable Data Science courses for you on Coursera.")
 		st.info("You can change configurations in the settings.")
 
 		search_query, submit, n_recommendations = self._input()
@@ -27,8 +30,8 @@ class ContentBaseFiltering:
 	def _input(self):
 		# A Searchbar for the user to input the name of the course they want to get recommendations for.
 		search_query, submit = self.widgets.search_bar(
-			label="Please enter the name of the Data Science course you want recommendations for:",
-			button_text="Search",
+			label="What do you want to learn? Please input related keywords.",
+			button_text="Click to get recommendations",
 			result_text="Searching Coursera"
 		)
 		with st.popover("Setting"):

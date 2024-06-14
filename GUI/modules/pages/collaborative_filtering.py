@@ -19,6 +19,9 @@ class CollaborateFiltering:
 	def gen_page(self):
 		st.title(self.title)
 		st.divider()
+		st.write("Recommendations for existing users are generated using Collaborative filtering by Surprise.")
+		st.image("GUI/img/Picture4.png")
+		st.image("GUI/img/Picture5.png")
 		st.info("You can change configurations in the settings.")
 		
 		data_type, n_recommendations, user_id, user_data, preset = self._input()
