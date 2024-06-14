@@ -11,21 +11,27 @@ class ContentBaseFiltering:
 	
 	def gen_page(self):
 		st.header(self.header)
-		st.write("Recommendations for new users are generated using content-based filtering techniques, specifically Gensim, cosine similarity.")
+		st.write(
+			"Recommendations for new users are generated using content-based filtering techniques, specifically Gensim, cosine similarity.")
 		st.image("GUI/img/Picture3.png")
-		st.write ("Please provide some of the following information so we can help recommend suitable Data Science courses for you on Coursera.")
+		st.write(
+			"Please provide some of the following information so we can help recommend suitable Data Science courses for you on Coursera.")
 		st.info("You can change configurations in the settings.")
-
-		search_query, submit, n_recommendations = self._input()
+		
+		search_query, submit, n_recommendations, show_dataframe = self._input()
 		
 		# Get the recommendations for the course entered by the user.
 		if submit:
 			with st.spinner(text="In progress"):
 				try:
-					self._get_recommendations(search_query=search_query, num_recommendations=n_recommendations)
+					self._get_recommendations(
+						search_query=search_query,
+						num_recommendations=n_recommendations,
+						show_dataframe=show_dataframe,
+					)
 				except Exception as e:
 					st.error(f"An error occurred: {e}")
-				
+	
 	def _input(self):
 		# A Searchbar for the user to input the name of the course they want to get recommendations for.
 		search_query, submit = self.widgets.search_bar(
@@ -39,9 +45,11 @@ class ContentBaseFiltering:
 				options=[1, 5, 10, 15, 20, 25],
 				index=1,
 			)
-		return search_query, submit, n_recommendations
+			
+			show_dataframe = st.checkbox("Show Dataframe", value=False)
+		return search_query, submit, n_recommendations, show_dataframe
 	
-	def _get_recommendations(self, search_query: str, num_recommendations: int=10):
+	def _get_recommendations(self, search_query: str, num_recommendations: int = 10, show_dataframe: bool = False):
 		if not search_query:
 			st.info("Please type something first.")
 		else:
@@ -49,19 +57,19 @@ class ContentBaseFiltering:
 				search_query=search_query,
 				num_recommendations=num_recommendations
 			)
-
+			
 			tab1, tab2 = st.tabs(["Gensim", "Cosine Similarity"])
 			
 			with tab1:
 				self.widgets.progress_bar(100)
-				st.write("Gensim Recommendations:")
-				st.dataframe(gensim_recommendations_df)
+				if show_dataframe:
+					self.widgets.show_raw_dataframe(df=gensim_recommendations_df)
 				self.widgets.display_courses_to_columns(gensim_recommendations_df)
 			
 			with tab2:
 				self.widgets.progress_bar(100)
-				st.write("Cosine Similarity Recommendations:")
-				st.dataframe(cosine_recommendations_df)
+				if show_dataframe:
+					self.widgets.show_raw_dataframe(df=cosine_recommendations_df)
 				self.widgets.display_courses_to_columns(cosine_recommendations_df)
 	
 	def _run_model(self, search_query: str, num_recommendations: int = 10):

@@ -23,7 +23,7 @@ class CollaborateFiltering:
 		st.image("GUI/img/Picture5.png")
 		st.info("You can change configurations in the settings.")
 		
-		data_type, n_recommendations, user_id, user_data, preset = self._input()
+		data_type, n_recommendations, user_id, user_data, preset, show_dataframe = self._input()
 		
 		press = st.button(f"Get recommendations for {data_type}")
 		if press:
@@ -33,6 +33,7 @@ class CollaborateFiltering:
 					user_data=user_data,
 					n_recommendations=n_recommendations,
 					preset=preset,
+					show_dataframe=show_dataframe,
 				)
 	
 	def _input(self):
@@ -47,6 +48,8 @@ class CollaborateFiltering:
 				options=[1, 5, 10, 15, 20, 25],
 				index=1,
 			)
+			
+			show_dataframe = st.checkbox("Show Dataframe", value=False)
 		
 		if data_type == "Preset Data":
 			user_id = self._preset_data()
@@ -57,7 +60,7 @@ class CollaborateFiltering:
 			user_data = self._input_data()
 			preset = False
 		
-		return data_type, n_recommendations, user_id, user_data, preset
+		return data_type, n_recommendations, user_id, user_data, preset, show_dataframe
 	
 	def _preset_data(self):
 		with st.spinner(text="Load users..."):
@@ -78,7 +81,9 @@ class CollaborateFiltering:
 		
 		return user_data
 	
-	def _present_recommendations(self, user_id=None, user_data=None, n_recommendations=10, preset=True):
+	def _present_recommendations(self,
+	                             user_id=None, user_data=None, n_recommendations=10, preset=True,
+	                             show_dataframe=False):
 		recommendations_df, user_history_df = self.recommendation_system.get_collaborative_recommendations(
 			user_id,
 			user_data,
@@ -88,8 +93,8 @@ class CollaborateFiltering:
 		self.widgets.progress_bar(100)
 		recommendations, user_history = st.tabs(["Recommendations", "User History"])
 		with recommendations:
-			st.write("Recommendations:")
-			st.dataframe(recommendations_df)
+			if show_dataframe:
+				self.widgets.show_raw_dataframe(recommendations_df)
 			self.widgets.display_courses_to_columns(recommendations_df)
 		with user_history:
 			st.write("User History:")
@@ -157,7 +162,7 @@ class CollaborateFiltering:
 		st.write("Generated random user data:")
 		user_data = self._edit_user_data(user_data)
 		selected_courses = courses_df[courses_df['CourseID'].isin(user_data['CourseID'])]
-
+		
 		st.dataframe(selected_courses)
 		
 		return user_data

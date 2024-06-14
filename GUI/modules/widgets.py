@@ -3,6 +3,7 @@ import random
 import streamlit as st
 import time
 
+
 class Widgets:
 	def __init__(self):
 		self.bar = None
@@ -28,7 +29,7 @@ class Widgets:
 			st.write(f"{result_text}: {search_query}")
 		
 		return search_query, submit
-
+	
 	def small_selectbox(
 			self,
 			label: str,
@@ -69,6 +70,13 @@ class Widgets:
 					st.text(f"Level: {row['Level']}")
 					with st.popover("Description"):
 						st.write(row['Description'])
+	
+	def show_raw_dataframe(self, df):
+		""" Display the raw dataframe """
+		st.divider()
+		st.write("Raw Dataframe:")
+		st.dataframe(df)
+		st.divider()
 	
 	def _change_metric_size(self, size: int = 20):
 		st.markdown(
