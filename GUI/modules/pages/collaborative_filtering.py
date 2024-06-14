@@ -8,7 +8,8 @@ from Project_2.modules.helpers import generate_random_user_data
 
 class CollaborateFiltering:
 	def __init__(self):
-		self.header = "Recommendation for existing users"
+		self.header = "Courses just for you"
+		self.subheader = '<h3 style="color:#A4C3A2;">Recommendation for existing users using collaborative filtering</h3>'
 		self.widgets = Widgets()
 		self.recommendation_system = RecommendationSystem()
 		self.data_preprocessing = DataPreprocessing(
@@ -19,7 +20,8 @@ class CollaborateFiltering:
 	def gen_page(self):
 		st.header(self.header)
 		st.divider()
-		st.write("Recommendations for existing users are generated using Collaborative filtering by Surprise.")
+		st.markdown(self.subheader, unsafe_allow_html=True)
+		st.write("Recommendations for existing users are generated using Collaborative filtering method with SVD.")
 		st.image("GUI/img/Picture4.png")
 		st.image("GUI/img/Picture5.png")
 		st.info("You can change configurations in the settings.")

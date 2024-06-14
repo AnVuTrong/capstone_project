@@ -5,15 +5,17 @@ from GUI.modules.backend.recommendation_system import RecommendationSystem
 
 class ContentBaseFiltering:
 	def __init__(self):
-		self.header = "Recommendation for new users"
+		self.header = "Searching for a course"
+		self.subheader = '<h3 style="color:#A4C3A2;">Recommendation for new users using content-based filtering</h3>'
 		self.widgets = Widgets()
 		self.recommendation_system = RecommendationSystem()
 	
 	def gen_page(self):
 		st.header(self.header)
 		st.divider()
+		st.markdown(self.subheader, unsafe_allow_html=True)
 		st.write(
-			"Recommendations for new users are generated using content-based filtering techniques, specifically Gensim, cosine similarity.")
+			"Recommendations for new users are generated using content-based filtering techniques, using GenSim and Cosine Similarity with TF-IDF.")
 		st.image("GUI/img/Picture3.png")
 		st.write(
 			"Please provide some of the following information so we can help recommend suitable Data Science courses for you on Coursera.")
@@ -45,8 +47,8 @@ class ContentBaseFiltering:
 			show_dataframe = st.checkbox("Show Dataframe", value=False)
 		
 		search_query, submit = self.widgets.search_bar(
-			label="What do you want to learn? Please input related keywords.",
-			button_text="Click to get recommendations",
+			label="What do you want to learn?",
+			button_text="Search courses",
 			result_text="Searching Coursera"
 		)
 		

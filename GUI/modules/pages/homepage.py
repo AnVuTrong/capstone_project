@@ -4,10 +4,12 @@ import streamlit as st
 class Homepage:
 	def __init__(self):
 		self.title = "Homepage"
+		self.subheader = '<h3 style="color:#A4C3A2;">Welcome</h3>'
 		
 	def gen_page(self):
 		st.header(self.title)
 		st.divider()
+		st.markdown(self.subheader, unsafe_allow_html=True)
 
 		st.markdown("***1. Introduction to the project***")
 		st.write("This project aims to develop a Recommender System to suggest courses to users. The target audience consists of two types of users:")

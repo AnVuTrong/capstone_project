@@ -9,31 +9,35 @@ class Sidebar:
 		self.options = [
 			"**Home**",
 			"**About us**",
-			"**Searching courses**",
-			"**Courses for you**",
+			"**Searching a course**",
+			"**Courses just for you**",
 			# "UI Test",
 		]
 		self.captions = [
-			"***:grey[Introduction of the project]***",
-			"***:grey[Introduce myself and team-member]***",
-			"***:grey[Recommendation for new users using content-based filtering]***",
-			"***:grey[Recommendation for existing users using collaborative filtering]***",
+			'<p style="color:#D7F9FA;">Introduction of the project</p>',
+			'<p style="color:#D7F9FA;">Introduce myself and team-member</p>',
+			'<p style="color:#D7F9FA;">Recommendation for new users using content-based filtering</p>',
+			'<p style="color:#D7F9FA;">Recommendation for existing users using collaborative filtering</p>',
 		]
 		
 		self.page_mng = PageManager()
 		self.image = "GUI/img/Picture2.png"
 	
 	def draw_sidebar(self):
+		if "selected_option" not in st.session_state:
+			st.session_state.selected_option = self.options[0]
+		
 		with st.sidebar:
 			st.header(self.header)
-			selected_option = st.sidebar.radio(
-				label="Please select a page:",
-				options=self.options,
-				captions=self.captions,
-			)
+			for i, option in enumerate(self.options):
+				if st.button(option, type='secondary', use_container_width=True):
+					st.session_state.selected_option = option
+				# st.markdown(self.captions[i], unsafe_allow_html=True)
 			st.image(self.image)
 			st.divider()
 			self._github()
+		
+		selected_option = st.session_state.selected_option
 		
 		if selected_option == "**Home**":
 			self.page_mng.gen_homepage()
@@ -41,20 +45,21 @@ class Sidebar:
 		elif selected_option == "**About us**":
 			self.page_mng.gen_about_us_page()
 		
-		elif selected_option == "**Searching courses**":
+		elif selected_option == "**Searching a course**":
 			self.page_mng.gen_content_base_filtering_page()
 		
-		elif selected_option == "**Courses for you**":
+		elif selected_option == "**Courses just for you**":
 			self.page_mng.gen_collaborative_filtering_page()
 	
 	# elif selected_option == "UI Test":
-	# 	self.page_mng.gen_testing_widgets()
+	#     self.page_mng.gen_testing_widgets()
 	
 	def _github(self):
 		""" Redirect to Github """
 		date_of_release = datetime(2024, 6, 22)
 		if datetime.today() > date_of_release:
-			st.link_button("Github", "https://github.com/AnVuTrong/capstone_project")
+			st.button("Github", on_click=lambda: st.write("Redirecting to Github"))
+			st.write("[Github](https://github.com/AnVuTrong/capstone_project)")
 		else:
 			click = st.button("Github")
 			st.info(f"Project will be open-sourced on {date_of_release.strftime('%Y-%m-%d')}") if click else None

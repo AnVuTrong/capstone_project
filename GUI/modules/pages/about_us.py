@@ -4,6 +4,7 @@ import streamlit as st
 class AboutUs:
 	def __init__(self):
 		self.header = "About Us"
+		self.subheader = '<h3 style="color:#A4C3A2;">Who are we?</h3>'
 		self.img_path = "GUI/img/"
 		self.vta = f"{self.img_path}vta.png"
 		self.lthb = f"{self.img_path}lthb.png"
@@ -12,6 +13,7 @@ class AboutUs:
 		""" Introduce myself and team-member """
 		st.header(self.header)
 		st.divider()
+		st.markdown(self.subheader, unsafe_allow_html=True)
 		col1, col2 = st.columns(2, gap='large')
 		with col1:
 			self._portraits(
@@ -28,9 +30,10 @@ class AboutUs:
 	
 	def _portraits(self, img, name, description):
 		# with st.container(border=True, height=600):
+			name = f"<h3 style='color:#5D7B6F;'>{name}</h3>"
 			st.image(img)
 			st.write("")
-			st.subheader(name)
+			st.markdown(name, unsafe_allow_html=True)
 			st.write(
 				description
 			)
