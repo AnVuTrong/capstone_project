@@ -47,29 +47,29 @@ class CollaborateFiltering:
 				options=[1, 5, 10, 15, 20, 25],
 				index=1,
 			)
-			
-			# filter_null_description = self.widgets.custom_filter(
-			# 	label="Removed courses with Null description",
-			# 	default=True,
-			# 	options=[True, False],
-			# )
-			#
-			# null_level = self.widgets.custom_filter(
-			# 	label="Removed courses with Null level",
-			# 	default=True,
-			# 	options=[True, False],
-			# )
-			
-			if data_type == "Preset Data":
-				user_id = self._preset_data()
-				user_data = None
-				preset = True
-			else:
-				user_id = None
-				user_data = self._input_data()
-				preset = False
-			
-			return data_type, n_recommendations, user_id, user_data, preset
+		
+		# filter_null_description = self.widgets.custom_filter(
+		# 	label="Removed courses with Null description",
+		# 	default=True,
+		# 	options=[True, False],
+		# )
+		#
+		# null_level = self.widgets.custom_filter(
+		# 	label="Removed courses with Null level",
+		# 	default=True,
+		# 	options=[True, False],
+		# )
+		
+		if data_type == "Preset Data":
+			user_id = self._preset_data()
+			user_data = None
+			preset = True
+		else:
+			user_id = None
+			user_data = self._input_data()
+			preset = False
+		
+		return data_type, n_recommendations, user_id, user_data, preset
 	
 	def _preset_data(self):
 		with st.spinner(text="Load users..."):
