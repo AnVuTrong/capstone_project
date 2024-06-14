@@ -60,10 +60,9 @@ class ContentBaseFiltering:
 				search_query=search_query,
 				num_recommendations=num_recommendations
 			)
-			
-			tab1, tab2 = st.tabs(["Gensim", "Cosine Similarity"])
 			self.widgets.progress_bar(100)
-			
+			tab1, tab2 = st.tabs(["Gensim", "Cosine Similarity"])
+
 			with tab1:
 				if show_dataframe:
 					self.widgets.show_raw_dataframe(df=gensim_recommendations_df)
