@@ -25,7 +25,7 @@ class AboutUs:
 			self._portraits(
 				img=self.lthb,
 				name="Le Thi Hai Binh",
-				description="I am a teacher at IUH, I'm joining the project to better support my researches."
+				description="I am a lecturer at IUH. I'm studying data science and machine learning to support my research."
 			)
 	
 	def _portraits(self, img, name, description):
