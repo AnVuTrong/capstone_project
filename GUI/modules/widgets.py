@@ -1,5 +1,6 @@
 import random
 
+import numpy as np
 import streamlit as st
 import time
 
@@ -67,9 +68,17 @@ class Widgets:
 					delta = round(random.uniform(0, 1), 1)
 					self._change_metric_size()
 					st.metric(label="Average rating: ", value=f"⭐{row['Average Rating']}", delta=delta)
-					st.text(f"Level: {row['Level']}")
-					with st.popover("Description"):
-						st.write(row['Description'])
+					if row['Level'] is not np.NaN:
+						st.text(f"Level: {row['Level']}")
+					else:
+						st.write("No level available.")
+						st.warning("Provider did not specify the level.")
+					with st.popover("Description", use_container_width=True):
+						if row['Description'] is not np.NaN:
+							st.write(row['Description'])
+						else:
+							st.write("No description available.")
+							st.warning("Provider did not specify any description.")
 	
 	def show_raw_dataframe(self, df):
 		""" Display the raw dataframe """

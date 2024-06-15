@@ -28,7 +28,7 @@ class CollaborateFiltering:
 		
 		data_type, n_recommendations, user_id, user_data, preset, show_dataframe = self._input()
 		
-		press = st.button(f"Get recommendations for {data_type}")
+		press = st.button(f"Get recommendations for {data_type}", use_container_width=True)
 		if press:
 			with st.spinner(text="In progress..."):
 				self._present_recommendations(
@@ -126,7 +126,7 @@ class CollaborateFiltering:
 		)
 		
 		user_id = user_dict[selected_user_name]
-		st.write(f"Selected User {selected_user_name}: {user_id}")
+		st.info(f"Selected User {selected_user_name}: :rainbow-background[{user_id}]")
 		
 		return user_id
 	

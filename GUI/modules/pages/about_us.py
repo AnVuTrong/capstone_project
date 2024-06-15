@@ -37,7 +37,7 @@ class AboutUs:
 			st.write(
 				description
 			)
-			click = st.button("Contact", key=name)
+			click = st.button("Contact", key=name, use_container_width=True)
 			if click:
 				st.warning("No contact information available.")
 				
