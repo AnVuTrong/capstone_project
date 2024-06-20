@@ -7,10 +7,11 @@ class Sidebar:
 	def __init__(self):
 		self.header = "Navigation Menu"
 		self.options = [
-			"**Home**",
+			"**Homepage**",
 			"**About us**",
-			"**Searching a course**",
-			"**Courses just for you**",
+			"**Customer segmentation**",
+			"**Recommend a course**",
+			"**How it works**",
 			# "UI Test",
 		]
 		self.captions = [
@@ -32,24 +33,27 @@ class Sidebar:
 			for i, option in enumerate(self.options):
 				if st.button(option, type='secondary', use_container_width=True):
 					st.session_state.selected_option = option
-				# st.markdown(self.captions[i], unsafe_allow_html=True)
+			# st.markdown(self.captions[i], unsafe_allow_html=True)
 			st.image(self.image)
 			st.divider()
 			self._github()
 		
 		selected_option = st.session_state.selected_option
 		
-		if selected_option == "**Home**":
+		if selected_option == "**Homepage**":
 			self.page_mng.gen_homepage()
 		
 		elif selected_option == "**About us**":
 			self.page_mng.gen_about_us_page()
 		
-		elif selected_option == "**Searching a course**":
-			self.page_mng.gen_content_base_filtering_page()
+		# elif selected_option == "**Customer segmentation**":
+		# 	self.page_mng.gen_customer_segmentation_page()
 		
-		elif selected_option == "**Courses just for you**":
-			self.page_mng.gen_collaborative_filtering_page()
+		elif selected_option == "**Recommend a course**":
+			self.page_mng.gen_recommendation_system_page()
+		
+		elif selected_option == "**How it works**":
+			self.page_mng.gen_how_it_work_page()
 	
 	# elif selected_option == "UI Test":
 	#     self.page_mng.gen_testing_widgets()
