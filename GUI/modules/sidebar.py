@@ -46,14 +46,14 @@ class Sidebar:
 		elif selected_option == "**About us**":
 			self.page_mng.gen_about_us_page()
 		
-		# elif selected_option == "**Customer segmentation**":
-		# 	self.page_mng.gen_customer_segmentation_page()
+		elif selected_option == "**How it works**":
+			self.page_mng.gen_how_it_work_page()
+		
+		elif selected_option == "**Customer segmentation**":
+			self.page_mng.gen_customer_segmentation_page()
 		
 		elif selected_option == "**Recommend a course**":
 			self.page_mng.gen_recommendation_system_page()
-		
-		elif selected_option == "**How it works**":
-			self.page_mng.gen_how_it_work_page()
 	
 	# elif selected_option == "UI Test":
 	#     self.page_mng.gen_testing_widgets()

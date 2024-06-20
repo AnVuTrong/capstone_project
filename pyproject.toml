@@ -62,6 +62,7 @@ xgboost = "^2.0.3"
 wordcloud = "^1.9.3"
 imblearn = "^0.0"
 streamlit = "^1.35.0"
+squarify = "^0.4.3"
 
 [build-system]
 requires = ["poetry-core"]
