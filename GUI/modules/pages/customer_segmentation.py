@@ -42,8 +42,8 @@ class CustomerSegmentation:
 	
 	def _download_sample_csv_button(self):
 		# Read the sample csv files
-		products_with_prices = pd.read_csv('project_1/data/Products_with_Prices.csv')
-		transactions = pd.read_csv('project_1/data/Transactions.csv')
+		products_with_prices = pd.read_csv('Project_1/data/Products_with_Prices.csv')
+		transactions = pd.read_csv('Project_1/data/Transactions.csv')
 		
 		# Convert dataframes to CSV
 		products_with_prices_csv = products_with_prices.to_csv(index=False)
