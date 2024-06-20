@@ -16,9 +16,14 @@ class CustomerSegmentation:
 		self.widgets = Widgets()
 	
 	def gen_page(self):
+		# Header
 		self._header()
+		
+		# Data Entry
 		products_with_prices, transactions = self._download_sample_csv_button()
 		uploaded_products_file, uploaded_transactions_file = self._upload_dataset()
+		
+		# Check for compatibility
 		self._check_for_compatibility(
 			uploaded_products_file,
 			uploaded_transactions_file,
@@ -95,6 +100,9 @@ class CustomerSegmentation:
 		st.markdown('<h3 style="color:#A4C3A2;">Data analysis</h3>', unsafe_allow_html=True)
 		preprocessor = PandasDataPreprocessing(products_df, transactions_df)
 		df_transaction, df_rfm = preprocessor.run()
+		
+		# Change TotalPayment to Totalsales
+		df_transaction.rename(columns={'TotalPayment': 'Totalsales'}, inplace=True)
 		
 		with st.expander("Please select which analysis you would like to perform"):
 			with st.form(key='analysis_form'):

@@ -22,7 +22,7 @@ class Sidebar:
 		]
 		
 		self.page_mng = PageManager()
-		self.image = "GUI/img/Picture2.png"
+		# self.image = "GUI/img/Picture2.png"
 	
 	def draw_sidebar(self):
 		if "selected_option" not in st.session_state:
@@ -34,7 +34,7 @@ class Sidebar:
 				if st.button(option, type='secondary', use_container_width=True):
 					st.session_state.selected_option = option
 			# st.markdown(self.captions[i], unsafe_allow_html=True)
-			st.image(self.image)
+			# st.image(self.image)
 			st.divider()
 			self._github()
 		
