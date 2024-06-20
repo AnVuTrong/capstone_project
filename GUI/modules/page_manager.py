@@ -2,7 +2,7 @@ from GUI.modules.pages import (
 	homepage,
 	about_us,
 	collaborative_filtering,
-	# how_it_work,
+	how_it_work,
 	# customer_segmentation,
 	content_base_filtering,
 	collaborative_filtering,
@@ -17,7 +17,7 @@ class PageManager:
 		self.content_base_filtering = content_base_filtering.ContentBaseFiltering()
 		self.collaborate_filtering = collaborative_filtering.CollaborateFiltering()
 		# self.customer_segmentation = customer_segmentation.CustomerSegmentation()
-		# self.how_it_work = how_it_work.howitwork()
+		self.how_it_work = how_it_work.HowItWork()
 		self.widget_test = widget_test.WidgetTest()
 	
 	def gen_homepage(self):
@@ -38,8 +38,8 @@ class PageManager:
 		elif selected_method == 'Collaborate Filtering':
 			self.collaborate_filtering.gen_page()
 	
-	# def gen_how_it_work_page(self):
-	# 	self.how_it_work.gen_page()
+	def gen_how_it_work_page(self):
+		self.how_it_work.gen_page()
 	
 	def gen_testing_widgets(self):
 		self.widget_test.gen_testing_widgets()
