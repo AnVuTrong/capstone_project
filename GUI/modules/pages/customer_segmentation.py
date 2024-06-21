@@ -345,6 +345,8 @@ class CustomerSegmentation:
 		cluster_names = self.get_cluster_names(n_clusters)
 		df_rfm['Cluster Name'] = df_rfm['Cluster'].map(cluster_names)
 		centers_df['Cluster Name'] = [cluster_names[i] for i in range(n_clusters)]
+		# drop Customer_value in df_rfm
+		df_rfm.drop('Customer_Value', axis=1, inplace=True)
 		
 		st.write("Cluster Centers:")
 		st.dataframe(centers_df)
