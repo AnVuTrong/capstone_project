@@ -21,7 +21,7 @@ class PandasDataPreprocessing:
 	df_transaction, df_rfm = preprocessor.run()
 	"""
 	
-	def __init__(self, product_file, transaction_file):
+	def __init__(self, product_file: str, transaction_file: str):
 		self.product_file = product_file
 		self.transaction_file = transaction_file
 		self.df_product = None
@@ -29,14 +29,8 @@ class PandasDataPreprocessing:
 		self.df_rfm = None
 	
 	def load_data(self):
-		if isinstance(self.product_file, str):
-			self.df_product = pd.read_csv(self.product_file)
-		else:
-			self.df_product = self.product_file
-		if isinstance(self.transaction_file, str):
-			self.df_transaction = pd.read_csv(self.transaction_file)
-		else:
-			self.df_transaction = self.transaction_file
+		self.df_product = pd.read_csv(self.product_file)
+		self.df_transaction = pd.read_csv(self.transaction_file)
 	
 	def preprocess_data(self):
 		# Merge product and transaction data
